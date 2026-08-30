@@ -1,0 +1,306 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>عيد ميلاد سعيد!</title>
+  <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;700&family=Caveat:wght@700&display=swap" rel="stylesheet">
+  
+  <style>
+    /* المتغيرات الأساسية للثيم */
+    :root {
+      --bg-burgundy: #6b1119;
+      --card-bg: #fffbf7;
+      --text-dark: #3a0a0e;
+      --gold-accent: #d4af37;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      font-family: 'Tajawal', sans-serif;
+      -webkit-tap-highlight-color: transparent;
+    }
+
+    body {
+      background-color: #1a1a1a;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      min-height: 100vh;
+      overflow: hidden;
+    }
+
+    /* محاكاة شاشة آيفون 13 */
+    .phone-container {
+      width: 390px;
+      height: 844px;
+      background-color: var(--bg-burgundy);
+      border-radius: 40px;
+      box-shadow: 0 20px 40px rgba(0,0,0,0.5);
+      position: relative;
+      overflow: hidden;
+      border: 8px solid #2d2d2d;
+      color: var(--card-bg);
+    }
+
+    /* أزرار التحكم العلوية (الموسيقى والرجوع) */
+    .top-bar {
+      position: absolute;
+      top: 40px;
+      left: 20px;
+      right: 20px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      z-index: 10;
+    }
+
+    .btn-icon {
+      background: rgba(255, 255, 255, 0.15);
+      backdrop-filter: blur(5px);
+      border: 1px solid rgba(255, 255, 255, 0.3);
+      color: white;
+      padding: 8px 16px;
+      border-radius: 20px;
+      cursor: pointer;
+      font-size: 14px;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      transition: all 0.3s ease;
+    }
+
+    .btn-icon:active {
+      transform: scale(0.95);
+    }
+
+    .hidden {
+      display: none !important;
+    }
+
+    /* الشاشة الأولى: الرسالة */
+    .screen {
+      width: 100%;
+      height: 100%;
+      position: absolute;
+      top: 0;
+      left: 0;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      padding: 20px;
+      transition: opacity 0.5s ease;
+    }
+
+    .envelope-wrapper {
+      cursor: pointer;
+      text-align: center;
+      animation: float 3s ease-in-out infinite;
+    }
+
+    .envelope {
+      width: 260px;
+      height: 180px;
+      background: #f4eae1;
+      border-radius: 10px;
+      position: relative;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      box-shadow: 0 10px 25px rgba(0,0,0,0.3);
+    }
+
+    .envelope::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      border-left: 130px solid transparent;
+      border-right: 130px solid transparent;
+      border-top: 100px solid #e2d3c4;
+    }
+
+    .stamp {
+      font-size: 40px;
+      z-index: 2;
+    }
+
+    .open-txt {
+      margin-top: 30px;
+      font-size: 22px;
+      letter-spacing: 1px;
+      color: var(--card-bg);
+      font-weight: bold;
+    }
+
+    /* القائمة الرئيسية */
+    .menu-title {
+      font-size: 26px;
+      margin-bottom: 30px;
+      text-align: center;
+      margin-top: 60px;
+    }
+
+    .menu-list {
+      width: 100%;
+      display: flex;
+      flex-direction: column;
+      gap: 15px;
+    }
+
+    .card-item {
+      background-color: var(--card-bg);
+      color: var(--text-dark);
+      padding: 18px 20px;
+      border-radius: 16px;
+      display: flex;
+      align-items: center;
+      gap: 15px;
+      cursor: pointer;
+      box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+      transition: transform 0.2s;
+    }
+
+    .card-item:active {
+      transform: scale(0.98);
+    }
+
+    .card-icon {
+      font-size: 24px;
+    }
+
+    .card-text {
+      font-size: 18px;
+      font-weight: bold;
+    }
+
+    /* صفحة تفاصيل الرسالة */
+    .message-body {
+      background-color: var(--card-bg);
+      color: var(--text-dark);
+      width: 100%;
+      height: 70%;
+      border-radius: 20px;
+      padding: 25px;
+      margin-top: 40px;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+      overflow-y: auto;
+      line-height: 1.8;
+      font-size: 18px;
+      white-space: pre-line;
+    }
+
+    /* خلفية نجوم ديكورية */
+    .star {
+      position: absolute;
+      color: var(--gold-accent);
+      font-size: 16px;
+      pointer-events: none;
+    }
+
+    @keyframes float {
+      0%, 100% { transform: translateY(0); }
+      50% { transform: translateY(-10px); }
+    }
+  </style>
+</head>
+<body>
+
+  <div class="phone-container">
+    <div class="star" style="top: 15%; left: 10%;">✦</div>
+    <div class="star" style="top: 25%; right: 12%;">★</div>
+    <div class="star" style="bottom: 15%; left: 15%;">★</div>
+
+    <div class="top-bar">
+      <button id="back-btn" class="btn-icon hidden" onclick="showScreen('main-menu')">
+        ➔ رجوع
+      </button>
+      <button id="music-btn" class="btn-icon" onclick="toggleMusic()">
+        🔊 تشغيل
+      </button>
+    </div>
+
+    <div id="intro-screen" class="screen">
+      <div class="envelope-wrapper" onclick="startApp()">
+        <div class="envelope">
+          <div class="stamp">💌</div>
+        </div>
+        <div class="open-txt">إفتح الرسالة...</div>
+      </div>
+    </div>
+
+    <div id="main-menu" class="screen hidden">
+      <h2 class="menu-title">كل عام وأنت بخير ✨</h2>
+      <div class="menu-list">
+        <div class="card-item" onclick="openMessage('الرسالة الأولى', 'هنا يمكنك كتابة النص الخاص بالرسالة الأولى...\nكل عام وأنت بخير وبصحة وسلامة!')">
+          <span class="card-icon">❤️</span>
+          <span class="card-text">رسالة 1</span>
+        </div>
+        <div class="card-item" onclick="openMessage('ذكرى جميلة', 'هنا تكتب ذكرى خاصة تجمعكم معاً...\nأتمنى لك سنة سعيدة مليئة بالإنجازات.')">
+          <span class="card-icon">🖼️</span>
+          <span class="card-text">رسالة 2 (صورنا)</span>
+        </div>
+        <div class="card-item" onclick="openMessage('أمنيتي لك', 'أتمنى لك في عامك الجديد كل النجاح والتوفيق والتألق الدائم.')">
+          <span class="card-icon">📖</span>
+          <span class="card-text">رسالة 3 (قصتنا)</span>
+        </div>
+      </div>
+    </div>
+
+    <div id="message-screen" class="screen hidden">
+      <div id="message-content" class="message-body"></div>
+    </div>
+  </div>
+
+  <audio id="bg-music" loop>
+    <source src="https://files.catbox.moe/1y9pp1.mp3" type="audio/mpeg">
+  </audio>
+
+  <script>
+    const audio = document.getElementById('bg-music');
+    const musicBtn = document.getElementById('music-btn');
+    const backBtn = document.getElementById('back-btn');
+    let isPlaying = false;
+
+    // تشغيل الموقع والأغنية
+    function startApp() {
+      toggleMusic(true);
+      showScreen('main-menu');
+    }
+
+    // التنقل بين الشاشات
+    function showScreen(screenId) {
+      document.querySelectorAll('.screen').forEach(s => s.classList.add('hidden'));
+      document.getElementById(screenId).classList.remove('hidden');
+
+      if (screenId === 'message-screen') {
+        backBtn.classList.remove('hidden');
+      } else {
+        backBtn.classList.add('hidden');
+      }
+    }
+
+    // فتح الرسالة المحددة
+    function openMessage(title, text) {
+      document.getElementById('message-content').innerText = text;
+      showScreen('message-screen');
+    }
+
+    // التحكم في الصوت
+    function toggleMusic(forcePlay = false) {
+      if (!isPlaying || forcePlay) {
+        audio.play().then(() => {
+          isPlaying = true;
+          musicBtn.innerHTML = '⏸️ إيقاف';
+        }).catch(err => console.log("تحذير تشغيل تلقائي:", err));
+      } else {
+        audio.pause();
+        isPlaying = false;
+        musicBtn.innerHTML = '🔊 تشغيل';
+      }
+    }
+  </script>
+</body>
+</html>
