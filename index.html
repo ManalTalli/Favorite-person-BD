@@ -7,7 +7,6 @@
   <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;700&family=Caveat:wght@700&display=swap" rel="stylesheet">
   
   <style>
-    /* المتغيرات الأساسية للثيم */
     :root {
       --bg-burgundy: #6b1119;
       --card-bg: #fffbf7;
@@ -32,7 +31,6 @@
       overflow: hidden;
     }
 
-    /* محاكاة شاشة آيفون 13 */
     .phone-container {
       width: 390px;
       height: 844px;
@@ -45,7 +43,6 @@
       color: var(--card-bg);
     }
 
-    /* أزرار التحكم العلوية (الموسيقى والرجوع) */
     .top-bar {
       position: absolute;
       top: 40px;
@@ -80,7 +77,6 @@
       display: none !important;
     }
 
-    /* الشاشة الأولى: الرسالة */
     .screen {
       width: 100%;
       height: 100%;
@@ -135,9 +131,8 @@
       font-weight: bold;
     }
 
-    /* القائمة الرئيسية */
     .menu-title {
-      font-size: 26px;
+      font-size: 20px;
       margin-bottom: 30px;
       text-align: center;
       margin-top: 60px;
@@ -147,7 +142,7 @@
       width: 100%;
       display: flex;
       flex-direction: column;
-      gap: 15px;
+      gap: 30px;
     }
 
     .card-item {
@@ -176,7 +171,6 @@
       font-weight: bold;
     }
 
-    /* صفحة تفاصيل الرسالة */
     .message-body {
       background-color: var(--card-bg);
       color: var(--text-dark);
@@ -192,7 +186,6 @@
       white-space: pre-line;
     }
 
-    /* خلفية نجوم ديكورية */
     .star {
       position: absolute;
       color: var(--gold-accent);
@@ -232,19 +225,15 @@
     </div>
 
     <div id="main-menu" class="screen hidden">
-      <h2 class="menu-title">كل عام وأنت بخير ✨</h2>
+      <h2 class="menu-title">كل عام وأنت الأثرُ الأجملُ في عمري.✨</h2>
       <div class="menu-list">
         <div class="card-item" onclick="openMessage('الرسالة الأولى', 'هنا يمكنك كتابة النص الخاص بالرسالة الأولى...\nكل عام وأنت بخير وبصحة وسلامة!')">
           <span class="card-icon">❤️</span>
-          <span class="card-text">رسالة 1</span>
+          <span class="card-text">رسالة </span>
         </div>
-        <div class="card-item" onclick="openMessage('ذكرى جميلة', 'هنا تكتب ذكرى خاصة تجمعكم معاً...\nأتمنى لك سنة سعيدة مليئة بالإنجازات.')">
-          <span class="card-icon">🖼️</span>
-          <span class="card-text">رسالة 2 (صورنا)</span>
-        </div>
-        <div class="card-item" onclick="openMessage('أمنيتي لك', 'أتمنى لك في عامك الجديد كل النجاح والتوفيق والتألق الدائم.')">
+        <div class="card-item" onclick="navigateToMemories()">
           <span class="card-icon">📖</span>
-          <span class="card-text">رسالة 3 (قصتنا)</span>
+          <span class="card-text">مذكرات قديمة</span>
         </div>
       </div>
     </div>
@@ -262,15 +251,39 @@
     const audio = document.getElementById('bg-music');
     const musicBtn = document.getElementById('music-btn');
     const backBtn = document.getElementById('back-btn');
-    let isPlaying = false;
 
-    // تشغيل الموقع والأغنية
+    window.addEventListener('DOMContentLoaded', () => {
+      const urlParams = new URLSearchParams(window.location.search);
+      if (urlParams.get('menu') === 'true') {
+        showScreen('main-menu');
+      }
+
+      // فحص حالة الموسيقى وتخزين الوقت
+      const musicState = localStorage.getItem('musicState');
+      const musicTime = localStorage.getItem('musicTime');
+
+      if (musicState === 'playing') {
+        if (musicTime) audio.currentTime = parseFloat(musicTime);
+        audio.play().then(() => {
+          musicBtn.innerHTML = '⏸️ إيقاف';
+        }).catch(err => console.log(err));
+      } else {
+        musicBtn.innerHTML = '🔊 تشغيل';
+      }
+    });
+
+    // تحديث وقت الصوت باستمرار في الذاكرة
+    audio.addEventListener('timeupdate', () => {
+      if (!audio.paused) {
+        localStorage.setItem('musicTime', audio.currentTime);
+      }
+    });
+
     function startApp() {
       toggleMusic(true);
       showScreen('main-menu');
     }
 
-    // التنقل بين الشاشات
     function showScreen(screenId) {
       document.querySelectorAll('.screen').forEach(s => s.classList.add('hidden'));
       document.getElementById(screenId).classList.remove('hidden');
@@ -282,24 +295,27 @@
       }
     }
 
-    // فتح الرسالة المحددة
     function openMessage(title, text) {
       document.getElementById('message-content').innerText = text;
       showScreen('message-screen');
     }
 
-    // التحكم في الصوت
     function toggleMusic(forcePlay = false) {
-      if (!isPlaying || forcePlay) {
+      if (audio.paused || forcePlay) {
         audio.play().then(() => {
-          isPlaying = true;
+          localStorage.setItem('musicState', 'playing');
           musicBtn.innerHTML = '⏸️ إيقاف';
-        }).catch(err => console.log("تحذير تشغيل تلقائي:", err));
+        }).catch(err => console.log(err));
       } else {
         audio.pause();
-        isPlaying = false;
+        localStorage.setItem('musicState', 'paused');
         musicBtn.innerHTML = '🔊 تشغيل';
       }
+    }
+
+    function navigateToMemories() {
+      localStorage.setItem('musicTime', audio.currentTime);
+      window.location.href = 'mem.html';
     }
   </script>
 </body>
