@@ -67,6 +67,7 @@
       align-items: center;
       gap: 6px;
       transition: all 0.3s ease;
+      text-decoration: none;
     }
 
     .btn-icon:active {
@@ -89,6 +90,11 @@
       align-items: center;
       padding: 20px;
       transition: opacity 0.5s ease;
+    }
+
+    .memories-screen-padding {
+      justify-content: flex-start !important;
+      padding: 90px 20px 20px 20px !important;
     }
 
     .envelope-wrapper {
@@ -186,6 +192,99 @@
       white-space: pre-line;
     }
 
+    /* تنسيقات المذكرات المصممة بالكامل */
+    .page-header {
+      text-align: center;
+      margin-bottom: 20px;
+    }
+
+    .page-title {
+      font-size: 24px;
+      font-weight: bold;
+      color: var(--card-bg);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+    }
+
+    .page-subtitle {
+      font-size: 14px;
+      color: rgba(255, 251, 247, 0.7);
+      margin-top: 5px;
+    }
+
+    .memories-list {
+      width: 100%;
+      display: flex;
+      flex-direction: column;
+      gap: 15px;
+      overflow-y: auto;
+      max-height: 670px;
+      padding-bottom: 20px;
+    }
+
+    .memories-list::-webkit-scrollbar {
+      width: 4px;
+    }
+    .memories-list::-webkit-scrollbar-thumb {
+      background: rgba(212, 175, 55, 0.4);
+      border-radius: 10px;
+    }
+
+    .memory-card {
+      background-color: var(--card-bg);
+      color: var(--text-dark);
+      padding: 16px 18px;
+      border-radius: 18px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      cursor: pointer;
+      box-shadow: 0 6px 15px rgba(0,0,0,0.25);
+      border-right: 5px solid var(--gold-accent);
+      transition: transform 0.2s, box-shadow 0.2s;
+    }
+
+    .memory-card:active {
+      transform: scale(0.97);
+    }
+
+    .memory-info {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .memory-icon {
+      font-size: 24px;
+      background: rgba(107, 17, 25, 0.08);
+      padding: 8px;
+      border-radius: 12px;
+    }
+
+    .memory-details {
+      display: flex;
+      flex-direction: column;
+    }
+
+    .memory-title {
+      font-size: 17px;
+      font-weight: bold;
+    }
+
+    .memory-date {
+      font-size: 12px;
+      color: #888;
+      margin-top: 2px;
+    }
+
+    .arrow-icon {
+      color: var(--bg-burgundy);
+      font-weight: bold;
+      font-size: 16px;
+    }
+
     .star {
       position: absolute;
       color: var(--gold-accent);
@@ -207,7 +306,7 @@
     <div class="star" style="bottom: 15%; left: 15%;">★</div>
 
     <div class="top-bar">
-      <button id="back-btn" class="btn-icon hidden" onclick="showScreen('main-menu')">
+      <button id="back-btn" class="btn-icon hidden" onclick="goBack()">
         ➔ رجوع
       </button>
       <button id="music-btn" class="btn-icon" onclick="toggleMusic()">
@@ -215,6 +314,7 @@
       </button>
     </div>
 
+    <!-- 1. شاشة الظرف -->
     <div id="intro-screen" class="screen">
       <div class="envelope-wrapper" onclick="startApp()">
         <div class="envelope">
@@ -224,23 +324,154 @@
       </div>
     </div>
 
+    <!-- 2. الشاشة الرئيسية -->
     <div id="main-menu" class="screen hidden">
       <h2 class="menu-title">كل عام وأنت الأثرُ الأجملُ في عمري.✨</h2>
       <div class="menu-list">
         <div class="card-item" onclick="openMessage('الرسالة الأولى', 'هنا يمكنك كتابة النص الخاص بالرسالة الأولى...\nكل عام وأنت بخير وبصحة وسلامة!')">
           <span class="card-icon">❤️</span>
-          <span class="card-text">رسالة </span>
+          <span class="card-text">رسالة 1</span>
         </div>
-        <div class="card-item" onclick="navigateToMemories()">
+        <div class="card-item" onclick="showScreen('memories-screen')">
           <span class="card-icon">📖</span>
           <span class="card-text">مذكرات قديمة</span>
         </div>
       </div>
     </div>
 
+    <!-- 3. شاشة قراءة الرسالة الأولى -->
     <div id="message-screen" class="screen hidden">
       <div id="message-content" class="message-body"></div>
     </div>
+
+    <!-- 4. شاشة قائمة المذكرات -->
+    <div id="memories-screen" class="screen memories-screen-padding hidden">
+      <div class="page-header">
+        <h2 class="page-title">📖 مذكرات قديمة</h2>
+        <p class="page-subtitle">لحظات جميلة قُيِّدت بالكلمات ✨</p>
+      </div>
+
+      <div class="memories-list">
+        
+        <div class="memory-card" onclick="openMemory('مذكرة 1', 'هنا يمكنك كتابة تفاصيل المذكرة الأولى...\nذكريات يوم رائع وأوقات جميلة لا تُنسى! 🤍')">
+          <div class="memory-info">
+            <span class="memory-icon">📜</span>
+            <div class="memory-details">
+              <span class="memory-title">مذكرة 1</span>
+              <span class="memory-date">تاريخ المذكرة الأولى</span>
+            </div>
+          </div>
+          <span class="arrow-icon">❮</span>
+        </div>
+
+        <div class="memory-card" onclick="openMemory('مذكرة 2', 'هنا يمكنك كتابة تفاصيل المذكرة الثانية...\nلحظات كانت ممتلئة بالضحك والفرح! ✨')">
+          <div class="memory-info">
+            <span class="memory-icon">❤️</span>
+            <div class="memory-details">
+              <span class="memory-title">مذكرة 2</span>
+              <span class="memory-date">تاريخ المذكرة الثانية</span>
+            </div>
+          </div>
+          <span class="arrow-icon">❮</span>
+        </div>
+
+        <div class="memory-card" onclick="openMemory('مذكرة 3', 'هنا يمكنك كتابة تفاصيل المذكرة الثالثة...\nذكريات خاصة جداً في القلب. 💖')">
+          <div class="memory-info">
+            <span class="memory-icon">📜</span>
+            <div class="memory-details">
+              <span class="memory-title">مذكرة 3</span>
+              <span class="memory-date">تاريخ المذكرة الثالثة</span>
+            </div>
+          </div>
+          <span class="arrow-icon">❮</span>
+        </div>
+
+        <div class="memory-card" onclick="openMemory('مذكرة 4', 'هنا يمكنك كتابة تفاصيل المذكرة الأولى...\nذكريات يوم رائع وأوقات جميلة لا تُنسى! 🤍')">
+          <div class="memory-info">
+            <span class="memory-icon">❤️</span>
+            <div class="memory-details">
+              <span class="memory-title">مذكرة 4</span>
+              <span class="memory-date">تاريخ المذكرة الأولى</span>
+            </div>
+          </div>
+          <span class="arrow-icon">❮</span>
+        </div>
+
+        <div class="memory-card" onclick="openMemory('مذكرة 5', 'هنا يمكنك كتابة تفاصيل المذكرة الأولى...\nذكريات يوم رائع وأوقات جميلة لا تُنسى! 🤍')">
+          <div class="memory-info">
+            <span class="memory-icon">📜</span>
+            <div class="memory-details">
+              <span class="memory-title">مذكرة 5</span>
+              <span class="memory-date">تاريخ المذكرة الأولى</span>
+            </div>
+          </div>
+          <span class="arrow-icon">❮</span>
+        </div>
+
+        <div class="memory-card" onclick="openMemory('مذكرة 6', 'هنا يمكنك كتابة تفاصيل المذكرة الأولى...\nذكريات يوم رائع وأوقات جميلة لا تُنسى! 🤍')">
+          <div class="memory-info">
+            <span class="memory-icon">❤️</span>
+            <div class="memory-details">
+              <span class="memory-title">مذكرة 6</span>
+              <span class="memory-date">تاريخ المذكرة الأولى</span>
+            </div>
+          </div>
+          <span class="arrow-icon">❮</span>
+        </div>
+
+        <div class="memory-card" onclick="openMemory('مذكرة 7', 'هنا يمكنك كتابة تفاصيل المذكرة الأولى...\nذكريات يوم رائع وأوقات جميلة لا تُنسى! 🤍')">
+          <div class="memory-info">
+            <span class="memory-icon">📜</span>
+            <div class="memory-details">
+              <span class="memory-title">مذكرة 7</span>
+              <span class="memory-date">تاريخ المذكرة الأولى</span>
+            </div>
+          </div>
+          <span class="arrow-icon">❮</span>
+        </div>
+
+        <div class="memory-card" onclick="openMemory('مذكرة 8', 'هنا يمكنك كتابة تفاصيل المذكرة الأولى...\nذكريات يوم رائع وأوقات جميلة لا تُنسى! 🤍')">
+          <div class="memory-info">
+            <span class="memory-icon">❤️</span>
+            <div class="memory-details">
+              <span class="memory-title">مذكرة 8</span>
+              <span class="memory-date">تاريخ المذكرة الأولى</span>
+            </div>
+          </div>
+          <span class="arrow-icon">❮</span>
+        </div>
+
+        <div class="memory-card" onclick="openMemory('مذكرة 9', 'هنا يمكنك كتابة تفاصيل المذكرة الأولى...\nذكريات يوم رائع وأوقات جميلة لا تُنسى! 🤍')">
+          <div class="memory-info">
+            <span class="memory-icon">📜</span>
+            <div class="memory-details">
+              <span class="memory-title">مذكرة 9</span>
+              <span class="memory-date">تاريخ المذكرة الأولى</span>
+            </div>
+          </div>
+          <span class="arrow-icon">❮</span>
+        </div>
+
+        <div class="memory-card" onclick="openMemory('مذكرة 10', 'هنا يمكنك كتابة تفاصيل المذكرة الأولى...\nذكريات يوم رائع وأوقات جميلة لا تُنسى! 🤍')">
+          <div class="memory-info">
+            <span class="memory-icon">❤️</span>
+            <div class="memory-details">
+              <span class="memory-title">مذكرة 10</span>
+              <span class="memory-date">تاريخ المذكرة الأولى</span>
+            </div>
+          </div>
+          <span class="arrow-icon">❮</span>
+        </div>
+
+      </div>
+    </div>
+
+    <!-- 5. شاشة قراءة المذكرة -->
+    <div id="read-memory-screen" class="screen hidden">
+      <h3 id="memory-view-title" style="margin-top: 30px; font-size: 20px;"></h3>
+      <div id="memory-view-content" class="message-body" style="height: 75%;"></div>
+    </div>
+
   </div>
 
   <audio id="bg-music" loop>
@@ -251,33 +482,8 @@
     const audio = document.getElementById('bg-music');
     const musicBtn = document.getElementById('music-btn');
     const backBtn = document.getElementById('back-btn');
-
-    window.addEventListener('DOMContentLoaded', () => {
-      const urlParams = new URLSearchParams(window.location.search);
-      if (urlParams.get('menu') === 'true') {
-        showScreen('main-menu');
-      }
-
-      // فحص حالة الموسيقى وتخزين الوقت
-      const musicState = localStorage.getItem('musicState');
-      const musicTime = localStorage.getItem('musicTime');
-
-      if (musicState === 'playing') {
-        if (musicTime) audio.currentTime = parseFloat(musicTime);
-        audio.play().then(() => {
-          musicBtn.innerHTML = '⏸️ إيقاف';
-        }).catch(err => console.log(err));
-      } else {
-        musicBtn.innerHTML = '🔊 تشغيل';
-      }
-    });
-
-    // تحديث وقت الصوت باستمرار في الذاكرة
-    audio.addEventListener('timeupdate', () => {
-      if (!audio.paused) {
-        localStorage.setItem('musicTime', audio.currentTime);
-      }
-    });
+    
+    let currentScreen = 'intro-screen';
 
     function startApp() {
       toggleMusic(true);
@@ -285,13 +491,23 @@
     }
 
     function showScreen(screenId) {
+      currentScreen = screenId;
+
       document.querySelectorAll('.screen').forEach(s => s.classList.add('hidden'));
       document.getElementById(screenId).classList.remove('hidden');
 
-      if (screenId === 'message-screen') {
-        backBtn.classList.remove('hidden');
-      } else {
+      if (screenId === 'intro-screen' || screenId === 'main-menu') {
         backBtn.classList.add('hidden');
+      } else {
+        backBtn.classList.remove('hidden');
+      }
+    }
+
+    function goBack() {
+      if (currentScreen === 'read-memory-screen') {
+        showScreen('memories-screen');
+      } else {
+        showScreen('main-menu');
       }
     }
 
@@ -300,22 +516,21 @@
       showScreen('message-screen');
     }
 
+    function openMemory(title, text) {
+      document.getElementById('memory-view-title').innerText = title;
+      document.getElementById('memory-view-content').innerText = text;
+      showScreen('read-memory-screen');
+    }
+
     function toggleMusic(forcePlay = false) {
       if (audio.paused || forcePlay) {
         audio.play().then(() => {
-          localStorage.setItem('musicState', 'playing');
           musicBtn.innerHTML = '⏸️ إيقاف';
         }).catch(err => console.log(err));
       } else {
         audio.pause();
-        localStorage.setItem('musicState', 'paused');
         musicBtn.innerHTML = '🔊 تشغيل';
       }
-    }
-
-    function navigateToMemories() {
-      localStorage.setItem('musicTime', audio.currentTime);
-      window.location.href = 'mem.html';
     }
   </script>
 </body>
